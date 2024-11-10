@@ -30,4 +30,5 @@
         </dependency>
 
     </dependencies>
+    <name>JDBC2Core</name>
 </project>
