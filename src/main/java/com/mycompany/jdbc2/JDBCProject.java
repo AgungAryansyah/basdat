@@ -42,16 +42,16 @@ public class JDBCProject extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(352, 352, 352)
+                .addGap(304, 304, 304)
                 .addComponent(jLabel1)
-                .addContainerGap(360, Short.MAX_VALUE))
+                .addContainerGap(408, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(90, 90, 90)
+                .addGap(93, 93, 93)
                 .addComponent(jLabel1)
-                .addContainerGap(530, Short.MAX_VALUE))
+                .addContainerGap(527, Short.MAX_VALUE))
         );
 
         pack();
