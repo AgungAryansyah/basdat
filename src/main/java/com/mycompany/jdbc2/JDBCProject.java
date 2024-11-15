@@ -189,6 +189,40 @@ public class JDBCProject extends javax.swing.JFrame {
                 }
             }
         });
+
+        tombolUbah.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (halamanDibuka.equals("CustomerPanel")){
+                    try{
+                        ubahCustomer();
+                        loadCustomerTable();
+                    } catch (Exception e){
+
+                    }
+                } else if (halamanDibuka.equals("ProductPanel")){
+                    try{
+                        ubahProduct();
+                        loadProductTable();
+                    } catch (Exception e){
+
+                    }
+                } else if (halamanDibuka.equals("OrderPanel")){
+                    try{
+                        ubahOrder();
+                        loadOrderTable();
+                    } catch (Exception e){
+
+                    }
+                } else if (halamanDibuka.equals("TransactionPanel")){
+                    try{
+                        ubahTransaction();
+                        loadTransactionTable();
+                    } catch (Exception e){
+
+                    }
+                }
+            }
+        });
     }
 
     private void tambahCustomer() throws SQLException, ClassNotFoundException{
@@ -245,6 +279,33 @@ public class JDBCProject extends javax.swing.JFrame {
         }
     }
 
+    private void ubahCustomer() throws SQLException, ClassNotFoundException{
+        String t_customerKey = CustomerText.getText();
+        String t_customerName = CNameText.getText();
+        String t_state = StateText.getText();
+        String t_region = RegionText.getText();
+        String t_country = CountryText.getText();
+        String t_market = MarketText.getText();
+        String t_bt = BTText.getText();
+        
+        try (Connection conn = DriverManager.getConnection(connectURL, sqlUser, sqlPassword)){
+            PreparedStatement statement = conn.prepareStatement(
+                "update Customer set CName = ?, States = ?, Region = ?, Country = ?, Market = ?, BusinessType = ? where Ckey = ?");
+            statement.setString(7, t_customerKey);
+            statement.setString(1, t_customerName);
+            statement.setString(2, t_state);
+            statement.setString(3, t_region);
+            statement.setString(4, t_country);
+            statement.setString(5, t_market);
+            statement.setString(6, t_bt);
+            int rowsInserted = statement.executeUpdate();
+            System.out.println(rowsInserted);
+        } catch (Exception e){
+            System.out.println("gagal");
+            e.printStackTrace();
+        }
+    }
+
     private void tambahProduct() throws SQLException, ClassNotFoundException{
         String p_pkey = PKeyText.getText();
         String p_c = CategoryText.getText();
@@ -280,13 +341,38 @@ public class JDBCProject extends javax.swing.JFrame {
         
         try (Connection conn = DriverManager.getConnection(connectURL, sqlUser, sqlPassword)){
             PreparedStatement statement = conn.prepareStatement(
-                "delete from product where PKey = ? and Category = ? and SubCategory = ? and PName = ? and Information = ? and Price = ?");
+                "delete from Product where PKey = ? and Category = ? and SubCategory = ? and PName = ? and Information = ? and Price = ?");
             statement.setString(1, p_pkey);
             statement.setString(2, p_c);
             statement.setString(3, p_sc);
             statement.setString(4, p_pname);
             statement.setString(5, p_i);
             statement.setString(6, p_price);
+            int rowsInserted = statement.executeUpdate();
+            System.out.println(rowsInserted);
+        } catch (Exception e){
+            System.out.println("gagal");
+            e.printStackTrace();
+        }
+    }
+
+    private void ubahProduct() throws SQLException, ClassNotFoundException{
+        String p_pkey = PKeyText.getText();
+        String p_c = CategoryText.getText();
+        String p_sc = SCText.getText();
+        String p_pname = PNameText.getText();
+        String p_i = InfoText.getText();
+        String p_price = PriceText.getText();
+        
+        try (Connection conn = DriverManager.getConnection(connectURL, sqlUser, sqlPassword)){
+            PreparedStatement statement = conn.prepareStatement(
+                "update Product set Category = ?, SubCategory = ?, PName = ?, Information = ?, Price = ? where PKey = ?");
+            statement.setString(6, p_pkey);
+            statement.setString(1, p_c);
+            statement.setString(2, p_sc);
+            statement.setString(3, p_pname);
+            statement.setString(4, p_i);
+            statement.setString(5, p_price);
             int rowsInserted = statement.executeUpdate();
             System.out.println(rowsInserted);
         } catch (Exception e){
@@ -345,6 +431,31 @@ public class JDBCProject extends javax.swing.JFrame {
         }
     } 
 
+    private void ubahOrder() throws SQLException, ClassNotFoundException{
+        String o_son = SONText.getText();
+        String o_pkey = PKey2Text.getText();
+        String o_oq = OQText.getText();
+        String o_dis = DisText.getText();
+        String o_ship = ShipText.getText();
+        String o_op = OPText.getText();
+        
+        try (Connection conn = DriverManager.getConnection(connectURL, sqlUser, sqlPassword)){
+            PreparedStatement statement = conn.prepareStatement(
+                "update Orders set OrderQuantity = ?, Discount = ?, ShippingCost = ?, OrderPriority = ? where SalesOrderNumber = ? and Pkey = ?");
+            statement.setString(5, o_son);
+            statement.setString(6, o_pkey);
+            statement.setString(1, o_oq);
+            statement.setString(2, o_dis);
+            statement.setString(3, o_ship);
+            statement.setString(4, o_op);
+            int rowsInserted = statement.executeUpdate();
+            System.out.println(rowsInserted);
+        } catch (Exception e){
+            System.out.println("gagal");
+            e.printStackTrace();
+        }
+    } 
+
     private void tambahTransaction() throws SQLException, ClassNotFoundException{
         String t_son = SON2Text.getText();
         String t_ckey = CKey2Text.getText();
@@ -383,6 +494,29 @@ public class JDBCProject extends javax.swing.JFrame {
             statement.setString(3, t_od);
             statement.setString(4, t_dd);
             statement.setString(5, t_sm);
+            int rowsInserted = statement.executeUpdate();
+            System.out.println(rowsInserted);
+        } catch (Exception e){
+            System.out.println("gagal");
+            e.printStackTrace();
+        }
+    } 
+
+    private void ubahTransaction() throws SQLException, ClassNotFoundException{
+        String t_son = SON2Text.getText();
+        String t_ckey = CKey2Text.getText();
+        String t_od = ODText.getText();
+        String t_dd = DDText.getText();
+        String t_sm = SMText.getText();
+        
+        try (Connection conn = DriverManager.getConnection(connectURL, sqlUser, sqlPassword)){
+            PreparedStatement statement = conn.prepareStatement(
+                "update Transactions set CKey = ?, OrderDate = ?, DeliveryDate = ?, ShipMode = ? where SalesOrderNumber = ?");
+            statement.setString(5, t_son);
+            statement.setString(1, t_ckey);
+            statement.setString(2, t_od);
+            statement.setString(3, t_dd);
+            statement.setString(4, t_sm);
             int rowsInserted = statement.executeUpdate();
             System.out.println(rowsInserted);
         } catch (Exception e){
