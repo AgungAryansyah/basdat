@@ -121,8 +121,6 @@ public class JDBCProject extends javax.swing.JFrame {
             }
         });
         
-
-
         //Menambah Fungsi Tombol Tambah
         tombolTambah.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -157,6 +155,40 @@ public class JDBCProject extends javax.swing.JFrame {
                 }
             }
         });
+
+        tombolHapus.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (halamanDibuka.equals("CustomerPanel")){
+                    try{
+                        hapusCustomer();
+                        loadCustomerTable();
+                    } catch (Exception e){
+
+                    }
+                } else if (halamanDibuka.equals("ProductPanel")){
+                    try{
+                        hapusProduct();
+                        loadProductTable();
+                    } catch (Exception e){
+
+                    }
+                } else if (halamanDibuka.equals("OrderPanel")){
+                    try{
+                        hapusOrder();
+                        loadOrderTable();
+                    } catch (Exception e){
+
+                    }
+                } else if (halamanDibuka.equals("TransactionPanel")){
+                    try{
+                        hapusTransaction();
+                        loadTransactionTable();
+                    } catch (Exception e){
+
+                    }
+                }
+            }
+        });
     }
 
     private void tambahCustomer() throws SQLException, ClassNotFoundException{
@@ -171,6 +203,33 @@ public class JDBCProject extends javax.swing.JFrame {
         try (Connection conn = DriverManager.getConnection(connectURL, sqlUser, sqlPassword)){
             PreparedStatement statement = conn.prepareStatement(
                 "insert into Customer values(?, ?, ?, ?, ?, ?, ?)");
+            statement.setString(1, t_customerKey);
+            statement.setString(2, t_customerName);
+            statement.setString(3, t_state);
+            statement.setString(4, t_region);
+            statement.setString(5, t_country);
+            statement.setString(6, t_market);
+            statement.setString(7, t_bt);
+            int rowsInserted = statement.executeUpdate();
+            System.out.println(rowsInserted);
+        } catch (Exception e){
+            System.out.println("gagal");
+            e.printStackTrace();
+        }
+    }
+
+    private void hapusCustomer() throws SQLException, ClassNotFoundException{
+        String t_customerKey = CustomerText.getText();
+        String t_customerName = CNameText.getText();
+        String t_state = StateText.getText();
+        String t_region = RegionText.getText();
+        String t_country = CountryText.getText();
+        String t_market = MarketText.getText();
+        String t_bt = BTText.getText();
+        
+        try (Connection conn = DriverManager.getConnection(connectURL, sqlUser, sqlPassword)){
+            PreparedStatement statement = conn.prepareStatement(
+                "delete from Customer where Ckey = ? and CName = ? and States = ? and Region = ? and Country = ? and Market = ? and BusinessType = ?");
             statement.setString(1, t_customerKey);
             statement.setString(2, t_customerName);
             statement.setString(3, t_state);
@@ -211,6 +270,31 @@ public class JDBCProject extends javax.swing.JFrame {
         }
     }
 
+    private void hapusProduct() throws SQLException, ClassNotFoundException{
+        String p_pkey = PKeyText.getText();
+        String p_c = CategoryText.getText();
+        String p_sc = SCText.getText();
+        String p_pname = PNameText.getText();
+        String p_i = InfoText.getText();
+        String p_price = PriceText.getText();
+        
+        try (Connection conn = DriverManager.getConnection(connectURL, sqlUser, sqlPassword)){
+            PreparedStatement statement = conn.prepareStatement(
+                "delete from product where PKey = ? and Category = ? and SubCategory = ? and PName = ? and Information = ? and Price = ?");
+            statement.setString(1, p_pkey);
+            statement.setString(2, p_c);
+            statement.setString(3, p_sc);
+            statement.setString(4, p_pname);
+            statement.setString(5, p_i);
+            statement.setString(6, p_price);
+            int rowsInserted = statement.executeUpdate();
+            System.out.println(rowsInserted);
+        } catch (Exception e){
+            System.out.println("gagal");
+            e.printStackTrace();
+        }
+    }
+
     private void tambahOrder() throws SQLException, ClassNotFoundException{
         String o_son = SONText.getText();
         String o_pkey = PKey2Text.getText();
@@ -236,6 +320,31 @@ public class JDBCProject extends javax.swing.JFrame {
         }
     } 
 
+    private void hapusOrder() throws SQLException, ClassNotFoundException{
+        String o_son = SONText.getText();
+        String o_pkey = PKey2Text.getText();
+        String o_oq = OQText.getText();
+        String o_dis = DisText.getText();
+        String o_ship = ShipText.getText();
+        String o_op = OPText.getText();
+        
+        try (Connection conn = DriverManager.getConnection(connectURL, sqlUser, sqlPassword)){
+            PreparedStatement statement = conn.prepareStatement(
+                "delete from Orders where SalesOrderNumber = ? and Pkey = ? and OrderQuantity = ? and Discount = ? and ShippingCost = ? and OrderPriority = ? ");
+            statement.setString(1, o_son);
+            statement.setString(2, o_pkey);
+            statement.setString(3, o_oq);
+            statement.setString(4, o_dis);
+            statement.setString(5, o_ship);
+            statement.setString(6, o_op);
+            int rowsInserted = statement.executeUpdate();
+            System.out.println(rowsInserted);
+        } catch (Exception e){
+            System.out.println("gagal");
+            e.printStackTrace();
+        }
+    } 
+
     private void tambahTransaction() throws SQLException, ClassNotFoundException{
         String t_son = SON2Text.getText();
         String t_ckey = CKey2Text.getText();
@@ -246,6 +355,29 @@ public class JDBCProject extends javax.swing.JFrame {
         try (Connection conn = DriverManager.getConnection(connectURL, sqlUser, sqlPassword)){
             PreparedStatement statement = conn.prepareStatement(
                 "insert into Transactions values(?, ?, ?, ?, ?)");
+            statement.setString(1, t_son);
+            statement.setString(2, t_ckey);
+            statement.setString(3, t_od);
+            statement.setString(4, t_dd);
+            statement.setString(5, t_sm);
+            int rowsInserted = statement.executeUpdate();
+            System.out.println(rowsInserted);
+        } catch (Exception e){
+            System.out.println("gagal");
+            e.printStackTrace();
+        }
+    } 
+
+    private void hapusTransaction() throws SQLException, ClassNotFoundException{
+        String t_son = SON2Text.getText();
+        String t_ckey = CKey2Text.getText();
+        String t_od = ODText.getText();
+        String t_dd = DDText.getText();
+        String t_sm = SMText.getText();
+        
+        try (Connection conn = DriverManager.getConnection(connectURL, sqlUser, sqlPassword)){
+            PreparedStatement statement = conn.prepareStatement(
+                "delete from Transactions where SalesOrderNumber = ? and CKey = ? and OrderDate = ? and DeliveryDate = ? and ShipMode = ? ");
             statement.setString(1, t_son);
             statement.setString(2, t_ckey);
             statement.setString(3, t_od);
