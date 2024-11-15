@@ -7,6 +7,7 @@ package com.mycompany.jdbc2;
 import java.awt.CardLayout;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -26,10 +27,12 @@ public class JDBCProject extends javax.swing.JFrame {
         String sqlInstanceName = "sql1"; // SQL Server instance name
         String sqlDatabase = "JDBC";  // Database name
         String sqlUser = "sa";
-        String sqlPassword = "Arifsql1"; // Password for sa account
+        String sqlPassword = "AgungOnDatabase123."; // Password for sa account
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         String connectURL = "jdbc:sqlserver://" + hostname + ":1433" + ";instance=" + sqlInstanceName + ";databaseName=" + sqlDatabase + ";encrypt=true;trustServerCertificate=true";
         try (Connection conn = DriverManager.getConnection(connectURL, sqlUser, sqlPassword)) {
+            
+            //Tampilkan Tabel User 
             DefaultTableModel model = (DefaultTableModel) CustomerTable.getModel();
             String query = "SELECT * FROM Customer";
             Statement statement = conn.createStatement();
@@ -44,6 +47,8 @@ public class JDBCProject extends javax.swing.JFrame {
                 String BusinessType = resultSet.getString("BusinessType");
                 model.addRow(new Object[]{CKey, CName, States, Region, Country, Market, BusinessType});
             }
+
+            //Tampilkan Tabel Product
             model = (DefaultTableModel) ProductTable.getModel();
             query = "SELECT * FROM Product";
             statement = conn.createStatement();
@@ -57,6 +62,8 @@ public class JDBCProject extends javax.swing.JFrame {
                 String Price = resultSet.getString("Price");
                 model.addRow(new Object[]{PKey, Category, SubCategory, PName, Information, Price});
             }
+
+            //Tampilikan Tabel Orders
             model = (DefaultTableModel) OrderTable.getModel();
             query = "SELECT * FROM Orders";
             statement = conn.createStatement();
@@ -70,6 +77,8 @@ public class JDBCProject extends javax.swing.JFrame {
                 String op = resultSet.getString("OrderPriority");
                 model.addRow(new Object[]{SON, PKey, oq, dis, sc, op});
             }
+
+            //Tampilkan Tabel Transactions 
             model = (DefaultTableModel) TransactionTable.getModel();
             query = "SELECT * FROM Transactions";
             statement = conn.createStatement();
@@ -82,6 +91,8 @@ public class JDBCProject extends javax.swing.JFrame {
                 String sm = resultSet.getString("ShipMode");
                 model.addRow(new Object[]{SON, CKey, od, dd, sm});
             }
+
+            //Menambah Fungsi Tombol Costumer
             CustomerTable.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
                     int selectedRow = CustomerTable.getSelectedRow();
@@ -103,6 +114,8 @@ public class JDBCProject extends javax.swing.JFrame {
                     }
                 }
             });
+
+            //Menambah Fungsi Tombol Product
             ProductTable.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
                     int selectedRow = ProductTable.getSelectedRow();
@@ -122,6 +135,9 @@ public class JDBCProject extends javax.swing.JFrame {
                     }
                 }
             });
+
+
+            //Menambah Fungsi Tombol Order
             OrderTable.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
                     int selectedRow = OrderTable.getSelectedRow();
@@ -141,6 +157,8 @@ public class JDBCProject extends javax.swing.JFrame {
                     }
                 }
             });
+
+            //Menambah Fungsi Tombol Transaction
             TransactionTable.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
                     int selectedRow = TransactionTable.getSelectedRow();
@@ -158,6 +176,60 @@ public class JDBCProject extends javax.swing.JFrame {
                     }
                 }
             });
+            
+
+
+            //Menambah Fungsi Tombol Tambah
+            tombolTambah.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    t_condition:
+                    if (halamanDibuka.equals("CustomerPanel")){
+                        String t_customerKey = CustomerText.getText();
+                        String t_customerName = CustomerText.getText();
+                        String t_state = CustomerText.getText();
+                        String t_region = CustomerText.getText();
+                        String t_country = CustomerText.getText();
+                        String t_market = CustomerText.getText();
+                        String t_bt = CustomerText.getText();
+                        
+                        if (t_customerKey.length() > 50 || 
+                            t_customerName.length() > 60 ||
+                            t_state.length() > 60 ||
+                            t_region.length() > 60 ||
+                            t_country.length() > 60 ||
+                            t_market.length() > 20 ||
+                            t_bt.length() > 30){
+                            break t_condition;
+                        } else {
+                            try{
+                                PreparedStatement statement = conn.prepareStatement(
+                                    "insert into Customer values(?, ?, ?, ?, ?, ?, ?)");
+                                statement.setString(1, t_customerKey);
+                                statement.setString(2, t_customerName);
+                                statement.setString(3, t_state);
+                                statement.setString(4, t_region);
+                                statement.setString(5, t_country);
+                                statement.setString(6, t_market);
+                                statement.setString(7, t_bt);
+                                int rowsInserted = statement.executeUpdate();
+                                System.out.println(rowsInserted);
+                            } catch (SQLException e){
+                                System.out.println("gagal");
+                                e.printStackTrace();
+                            }
+                        }
+                        
+                    } else if (halamanDibuka.equals("ProductPanel")){
+
+                    } else if (halamanDibuka.equals("OrderPanel")){
+
+                    } else if (halamanDibuka.equals("TransactionPanel")){
+
+                    }
+                }
+            });
+
+            
         }
     }
 
@@ -173,24 +245,6 @@ public class JDBCProject extends javax.swing.JFrame {
         CorePanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        CustomerPanel = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        CustomerTable = new javax.swing.JTable();
-        CustomerInput = new javax.swing.JTextField();
-        CustomerLabel = new javax.swing.JLabel();
-        CustomerText = new javax.swing.JTextField();
-        CNameLabel = new javax.swing.JLabel();
-        CNameText = new javax.swing.JTextField();
-        StateLabel = new javax.swing.JLabel();
-        StateText = new javax.swing.JTextField();
-        RegionLabel = new javax.swing.JLabel();
-        RegionText = new javax.swing.JTextField();
-        CountryLabel = new javax.swing.JLabel();
-        CountryText = new javax.swing.JTextField();
-        MarketLabel = new javax.swing.JLabel();
-        MarketText = new javax.swing.JTextField();
-        BTLabel = new javax.swing.JLabel();
-        BTText = new javax.swing.JTextField();
         ProductPanel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         ProductTable = new javax.swing.JTable();
@@ -237,10 +291,31 @@ public class JDBCProject extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
         SMText = new javax.swing.JTextField();
         DDText = new javax.swing.JTextField();
+        CustomerPanel = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        CustomerTable = new javax.swing.JTable();
+        CustomerInput = new javax.swing.JTextField();
+        CustomerLabel = new javax.swing.JLabel();
+        CustomerText = new javax.swing.JTextField();
+        CNameLabel = new javax.swing.JLabel();
+        CNameText = new javax.swing.JTextField();
+        StateLabel = new javax.swing.JLabel();
+        StateText = new javax.swing.JTextField();
+        RegionLabel = new javax.swing.JLabel();
+        RegionText = new javax.swing.JTextField();
+        CountryLabel = new javax.swing.JLabel();
+        CountryText = new javax.swing.JTextField();
+        MarketLabel = new javax.swing.JLabel();
+        MarketText = new javax.swing.JTextField();
+        BTLabel = new javax.swing.JLabel();
+        BTText = new javax.swing.JTextField();
         CustomerButton = new javax.swing.JButton();
         ProductButton = new javax.swing.JButton();
         OrderButton = new javax.swing.JButton();
         TransactionButton = new javax.swing.JButton();
+        tombolTambah = new javax.swing.JButton();
+        tombolUbah = new javax.swing.JButton();
+        tombolHapus = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -252,133 +327,6 @@ public class JDBCProject extends javax.swing.JFrame {
 
         jPanel1.setLayout(new java.awt.CardLayout());
         cardLayout = (CardLayout) jPanel1.getLayout();
-
-        CustomerPanel.setBackground(new java.awt.Color(255, 102, 102));
-        CustomerPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        CustomerTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "CustomerKey", "CustomerName", "States", "Region", "Country", "Market", "BusinessType"
-            }
-        ));
-        jScrollPane1.setViewportView(CustomerTable);
-
-        CustomerInput.setText("Masukkan Customer Key");
-        CustomerInput.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CustomerInputActionPerformed(evt);
-            }
-        });
-
-        CustomerLabel.setText("Customer Key");
-
-        CNameLabel.setText("Customer Name");
-
-        StateLabel.setText("States");
-
-        RegionLabel.setText("Region");
-
-        CountryLabel.setText("Country");
-
-        MarketLabel.setText("Market");
-
-        MarketText.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MarketTextActionPerformed(evt);
-            }
-        });
-
-        BTLabel.setText("Business");
-
-        BTText.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BTTextActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout CustomerPanelLayout = new javax.swing.GroupLayout(CustomerPanel);
-        CustomerPanel.setLayout(CustomerPanelLayout);
-        CustomerPanelLayout.setHorizontalGroup(
-            CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(CustomerPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(CustomerPanelLayout.createSequentialGroup()
-                        .addComponent(CustomerInput, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(CustomerPanelLayout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(CustomerPanelLayout.createSequentialGroup()
-                        .addComponent(RegionLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(RegionText, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(CustomerPanelLayout.createSequentialGroup()
-                        .addComponent(StateLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(StateText, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(CustomerPanelLayout.createSequentialGroup()
-                        .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(CustomerLabel)
-                            .addComponent(CNameLabel))
-                        .addGap(26, 26, 26)
-                        .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(CNameText, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(CustomerText, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(237, 237, 237)
-                .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(CustomerPanelLayout.createSequentialGroup()
-                        .addComponent(CountryLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(CountryText, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(CustomerPanelLayout.createSequentialGroup()
-                        .addComponent(MarketLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(MarketText, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(CustomerPanelLayout.createSequentialGroup()
-                        .addComponent(BTLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(BTText, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(237, Short.MAX_VALUE))
-        );
-        CustomerPanelLayout.setVerticalGroup(
-            CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(CustomerPanelLayout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(CustomerInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(CustomerLabel)
-                    .addComponent(CustomerText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CountryLabel)
-                    .addComponent(CountryText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(CNameLabel)
-                    .addComponent(CNameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(MarketLabel)
-                    .addComponent(MarketText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(StateText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(StateLabel)
-                    .addComponent(BTLabel)
-                    .addComponent(BTText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(RegionLabel)
-                    .addComponent(RegionText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(181, Short.MAX_VALUE))
-        );
-
-        jPanel1.add(CustomerPanel, "CustomerPanel");
 
         ProductPanel.setBackground(new java.awt.Color(255, 102, 102));
 
@@ -754,6 +702,133 @@ public class JDBCProject extends javax.swing.JFrame {
 
         jPanel1.add(TransactionPanel, "TransactionPanel");
 
+        CustomerPanel.setBackground(new java.awt.Color(255, 102, 102));
+        CustomerPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        CustomerTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "CustomerKey", "CustomerName", "States", "Region", "Country", "Market", "BusinessType"
+            }
+        ));
+        jScrollPane1.setViewportView(CustomerTable);
+
+        CustomerInput.setText("Masukkan Customer Key");
+        CustomerInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CustomerInputActionPerformed(evt);
+            }
+        });
+
+        CustomerLabel.setText("Customer Key");
+
+        CNameLabel.setText("Customer Name");
+
+        StateLabel.setText("States");
+
+        RegionLabel.setText("Region");
+
+        CountryLabel.setText("Country");
+
+        MarketLabel.setText("Market");
+
+        MarketText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MarketTextActionPerformed(evt);
+            }
+        });
+
+        BTLabel.setText("Business");
+
+        BTText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTTextActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout CustomerPanelLayout = new javax.swing.GroupLayout(CustomerPanel);
+        CustomerPanel.setLayout(CustomerPanelLayout);
+        CustomerPanelLayout.setHorizontalGroup(
+            CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(CustomerPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(CustomerPanelLayout.createSequentialGroup()
+                        .addComponent(CustomerInput, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(CustomerPanelLayout.createSequentialGroup()
+                .addGap(60, 60, 60)
+                .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(CustomerPanelLayout.createSequentialGroup()
+                        .addComponent(StateLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(StateText, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(CustomerPanelLayout.createSequentialGroup()
+                        .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(CustomerLabel)
+                            .addComponent(CNameLabel))
+                        .addGap(26, 26, 26)
+                        .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(CNameText, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(CustomerText, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CustomerPanelLayout.createSequentialGroup()
+                        .addComponent(RegionLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(RegionText, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(237, 237, 237)
+                .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(CustomerPanelLayout.createSequentialGroup()
+                        .addComponent(CountryLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(CountryText, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(CustomerPanelLayout.createSequentialGroup()
+                        .addComponent(MarketLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(MarketText, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(CustomerPanelLayout.createSequentialGroup()
+                        .addComponent(BTLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(BTText, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(237, Short.MAX_VALUE))
+        );
+        CustomerPanelLayout.setVerticalGroup(
+            CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(CustomerPanelLayout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(CustomerInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(CustomerLabel)
+                    .addComponent(CustomerText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(CountryLabel)
+                    .addComponent(CountryText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(CNameLabel)
+                    .addComponent(CNameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(MarketLabel)
+                    .addComponent(MarketText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(StateText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(StateLabel)
+                    .addComponent(BTLabel)
+                    .addComponent(BTText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(RegionLabel)
+                    .addComponent(RegionText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(181, Short.MAX_VALUE))
+        );
+
+        jPanel1.add(CustomerPanel, "CustomerPanel");
+
         CustomerButton.setText("Customer");
         CustomerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -823,6 +898,22 @@ public class JDBCProject extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        tombolTambah.setText("Tambah");
+        tombolTambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tombolTambahActionPerformed(evt);
+            }
+        });
+
+        tombolUbah.setText("Ubah");
+        tombolUbah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tombolUbahActionPerformed(evt);
+            }
+        });
+
+        tombolHapus.setText("Hapus");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -830,12 +921,25 @@ public class JDBCProject extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(CorePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(195, 195, 195)
+                .addComponent(tombolTambah)
+                .addGap(195, 195, 195)
+                .addComponent(tombolUbah)
+                .addGap(196, 196, 196)
+                .addComponent(tombolHapus)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(CorePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tombolTambah)
+                    .addComponent(tombolUbah)
+                    .addComponent(tombolHapus))
+                .addGap(0, 32, Short.MAX_VALUE))
         );
 
         pack();
@@ -843,18 +947,22 @@ public class JDBCProject extends javax.swing.JFrame {
 
     private void CustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CustomerButtonActionPerformed
         cardLayout.show(jPanel1, "CustomerPanel");
+        halamanDibuka = "CustomerPanel";
     }//GEN-LAST:event_CustomerButtonActionPerformed
 
     private void ProductButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProductButtonActionPerformed
         cardLayout.show(jPanel1, "ProductPanel");
+        halamanDibuka = "ProductPanel";
     }//GEN-LAST:event_ProductButtonActionPerformed
 
     private void OrderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OrderButtonActionPerformed
         cardLayout.show(jPanel1, "OrderPanel");
+        halamanDibuka = "OrderPanel";
     }//GEN-LAST:event_OrderButtonActionPerformed
 
     private void TransactionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransactionButtonActionPerformed
         cardLayout.show(jPanel1, "TransactionPanel");
+        halamanDibuka = "TransactionPanel";
     }//GEN-LAST:event_TransactionButtonActionPerformed
 
     private void CustomerInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CustomerInputActionPerformed
@@ -912,6 +1020,14 @@ public class JDBCProject extends javax.swing.JFrame {
     private void DDTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DDTextActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_DDTextActionPerformed
+
+    private void tombolTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tombolTambahActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tombolTambahActionPerformed
+
+    private void tombolUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tombolUbahActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tombolUbahActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1026,6 +1142,12 @@ public class JDBCProject extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JButton tombolHapus;
+    private javax.swing.JButton tombolTambah;
+    private javax.swing.JButton tombolUbah;
     // End of variables declaration//GEN-END:variables
     private CardLayout cardLayout;
+
+    //Variabel untuk menentukan halaman yang sedang dibuka
+    private String halamanDibuka = "CustomerPanel"; //"CustomerPanel" sebagai halaman pertama yang dibuka 
 }
