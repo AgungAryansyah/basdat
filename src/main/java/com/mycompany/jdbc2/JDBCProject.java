@@ -240,9 +240,10 @@ public class JDBCProject extends javax.swing.JFrame {
 
         p_search.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                String ps_pkey = ProductInput.getText();
+                String ps_input = ProductInput.getText();
+                String ps_inputType = (String) p_stype.getSelectedItem();
                 try{
-                    cariProduct(ps_pkey);
+                    cariProduct(ps_input, ps_inputType);
                 } catch (Exception e){
                     System.out.println("gagal");
                 }
@@ -252,9 +253,10 @@ public class JDBCProject extends javax.swing.JFrame {
 
         o_search.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                String os_son = OrderInput.getText();
+                String os_input = OrderInput.getText();
+                String os_inputType = (String) o_stype.getSelectedItem();
                 try{
-                    cariOrder(os_son);
+                    cariOrder(os_input, os_inputType);
                 } catch (Exception e){
                     System.out.println("gagal 1");
                 }
@@ -264,9 +266,10 @@ public class JDBCProject extends javax.swing.JFrame {
 
         t_search.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                String ts_son = TransactionInput.getText();
+                String ts_input = TransactionInput.getText();
+                String ts_inputType = (String) t_stype.getSelectedItem();
                 try{
-                    cariTransaction(ts_son);
+                    cariTransaction(ts_input, ts_inputType);
                 } catch (Exception e){
                     System.out.println("gagal");
                 }
@@ -653,12 +656,23 @@ public class JDBCProject extends javax.swing.JFrame {
         }
     }
     
-    private void cariProduct(String ps_pkey) throws SQLException, ClassNotFoundException{
+    private void cariProduct(String ps_input, String ps_inputType) throws SQLException, ClassNotFoundException{
         try (Connection conn = DriverManager.getConnection(connectURL, sqlUser, sqlPassword)) {
             //Tampilkan Tabel Product
             DefaultTableModel model = (DefaultTableModel) ProductTable.getModel();
             model.setRowCount(0);
-            String query = "SELECT * FROM Product where Pkey = '" + ps_pkey + "'";
+            String sqlInput = ps_inputType;
+            switch (ps_inputType) {
+                case "Product Key":
+                    sqlInput = "PKey";
+                    break;
+                case "Product Name":
+                    sqlInput = "PName";
+                    break;
+                default:
+                    break;
+            }
+            String query = "SELECT * FROM Product where " + sqlInput + " = '" + ps_input + "'";
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
@@ -693,12 +707,32 @@ public class JDBCProject extends javax.swing.JFrame {
         }
     }
 
-    private void cariOrder(String os_son) throws SQLException, ClassNotFoundException{
+    private void cariOrder(String os_input, String os_inputType) throws SQLException, ClassNotFoundException{
         try (Connection conn = DriverManager.getConnection(connectURL, sqlUser, sqlPassword)) {
             //Tampilikan Tabel Orders
             DefaultTableModel model = (DefaultTableModel) OrderTable.getModel();
             model.setRowCount(0);
-            String query = "SELECT * FROM Orders where SalesOrderNumber = '" + os_son + "'";
+            String sqlInput = os_inputType;
+            switch (os_inputType) {
+                case "Sales Order Number":
+                    sqlInput = "SalesOrderNumber";
+                    break;
+                case "Product Key":
+                    sqlInput = "PKey";
+                    break;
+                case "Order Quantity":
+                    sqlInput = "OrderQuantity";
+                    break;
+                case "Shipping Cost":
+                    sqlInput = "ShippingCost";
+                    break;
+                case "Order Priority":
+                    sqlInput = "Order Priority";
+                    break;
+                default:
+                    break;
+            }
+            String query = "SELECT * FROM Orders where " + sqlInput + " = '" + os_input + "'";
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
@@ -732,12 +766,32 @@ public class JDBCProject extends javax.swing.JFrame {
         }
     }
 
-    private void cariTransaction(String ts_son) throws SQLException, ClassNotFoundException{
+    private void cariTransaction(String ts_input, String ts_inputType) throws SQLException, ClassNotFoundException{
         try (Connection conn = DriverManager.getConnection(connectURL, sqlUser, sqlPassword)) {
             //Tampilkan Tabel Transactions 
             DefaultTableModel model = (DefaultTableModel) TransactionTable.getModel();
             model.setRowCount(0);
-            String query = "SELECT * FROM Transactions where SalesOrderNumber = '" + ts_son + "'";
+            String sqlInput = ts_inputType;
+            switch (ts_inputType) {
+                case "Sales Order Number":
+                    sqlInput = "SalesOrderNumber";
+                    break;
+                case "Customer Key":
+                    sqlInput = "CKey";
+                    break;
+                case "Order Date":
+                    sqlInput = "OrderDate";
+                    break;
+                case "Delivery Date":
+                    sqlInput = "DeliveryDate";
+                    break;
+                case "Ship Mode":
+                    sqlInput = "ShipMode";
+                    break;
+                default:
+                    break;
+            }
+            String query = "SELECT * FROM Transactions where " + sqlInput + " = '" + ts_input + "'";
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
@@ -781,6 +835,7 @@ public class JDBCProject extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         PriceText = new javax.swing.JTextField();
         p_search = new javax.swing.JButton();
+        p_stype = new javax.swing.JComboBox<>();
         OrderPanel = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         OrderTable = new javax.swing.JTable();
@@ -798,6 +853,7 @@ public class JDBCProject extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         OQText = new javax.swing.JTextField();
         o_search = new javax.swing.JButton();
+        o_stype = new javax.swing.JComboBox<>();
         TransactionPanel = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         TransactionTable = new javax.swing.JTable();
@@ -813,6 +869,7 @@ public class JDBCProject extends javax.swing.JFrame {
         SMText = new javax.swing.JTextField();
         DDText = new javax.swing.JTextField();
         t_search = new javax.swing.JButton();
+        t_stype = new javax.swing.JComboBox<>();
         CustomerPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         CustomerTable = new javax.swing.JTable();
@@ -866,7 +923,7 @@ public class JDBCProject extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(ProductTable);
 
-        ProductInput.setText("Masukkan Product Key");
+        ProductInput.setText("");
         ProductInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ProductInputActionPerformed(evt);
@@ -899,6 +956,8 @@ public class JDBCProject extends javax.swing.JFrame {
 
         p_search.setText("Cari");
 
+        p_stype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Product Key", "Category", "SubCategory", "Product Name", "Information", "Price" }));
+
         javax.swing.GroupLayout ProductPanelLayout = new javax.swing.GroupLayout(ProductPanel);
         ProductPanel.setLayout(ProductPanelLayout);
         ProductPanelLayout.setHorizontalGroup(
@@ -908,6 +967,8 @@ public class JDBCProject extends javax.swing.JFrame {
                 .addGroup(ProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1093, Short.MAX_VALUE)
                     .addGroup(ProductPanelLayout.createSequentialGroup()
+                        .addComponent(p_stype, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ProductInput, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(p_search)
@@ -950,7 +1011,8 @@ public class JDBCProject extends javax.swing.JFrame {
                 .addGap(9, 9, 9)
                 .addGroup(ProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ProductInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(p_search))
+                    .addComponent(p_search)
+                    .addComponent(p_stype, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -996,7 +1058,7 @@ public class JDBCProject extends javax.swing.JFrame {
         ));
         jScrollPane3.setViewportView(OrderTable);
 
-        OrderInput.setText("Masukkan Sales Order Number");
+        OrderInput.setText("");
         OrderInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 OrderInputActionPerformed(evt);
@@ -1040,6 +1102,8 @@ public class JDBCProject extends javax.swing.JFrame {
             }
         });
 
+        o_stype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sales Order Number", "Product Key", "Order Quantity", "Discount", "Shipping Cost", "Order Priority" }));
+
         javax.swing.GroupLayout OrderPanelLayout = new javax.swing.GroupLayout(OrderPanel);
         OrderPanel.setLayout(OrderPanelLayout);
         OrderPanelLayout.setHorizontalGroup(
@@ -1049,6 +1113,8 @@ public class JDBCProject extends javax.swing.JFrame {
                 .addGroup(OrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1093, Short.MAX_VALUE)
                     .addGroup(OrderPanelLayout.createSequentialGroup()
+                        .addComponent(o_stype, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(OrderInput, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(o_search)
@@ -1083,7 +1149,7 @@ public class JDBCProject extends javax.swing.JFrame {
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(DisText, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(388, Short.MAX_VALUE))
         );
         OrderPanelLayout.setVerticalGroup(
             OrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1091,7 +1157,8 @@ public class JDBCProject extends javax.swing.JFrame {
                 .addGap(21, 21, 21)
                 .addGroup(OrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(OrderInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(o_search))
+                    .addComponent(o_search)
+                    .addComponent(o_stype, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -1120,7 +1187,7 @@ public class JDBCProject extends javax.swing.JFrame {
                         .addGroup(OrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(OPText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10))))
-                .addContainerGap(208, Short.MAX_VALUE))
+                .addContainerGap(209, Short.MAX_VALUE))
         );
 
         jPanel1.add(OrderPanel, "OrderPanel");
@@ -1137,7 +1204,7 @@ public class JDBCProject extends javax.swing.JFrame {
         ));
         jScrollPane4.setViewportView(TransactionTable);
 
-        TransactionInput.setText("Masukkan Sales Order Number");
+        TransactionInput.setText("");
         TransactionInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TransactionInputActionPerformed(evt);
@@ -1174,6 +1241,8 @@ public class JDBCProject extends javax.swing.JFrame {
 
         t_search.setText("Cari");
 
+        t_stype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sales Order Number", "Customer Key", "Order Date", "Delivery Date", "Ship Mode" }));
+
         javax.swing.GroupLayout TransactionPanelLayout = new javax.swing.GroupLayout(TransactionPanel);
         TransactionPanel.setLayout(TransactionPanelLayout);
         TransactionPanelLayout.setHorizontalGroup(
@@ -1183,6 +1252,8 @@ public class JDBCProject extends javax.swing.JFrame {
                 .addGroup(TransactionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 1093, Short.MAX_VALUE)
                     .addGroup(TransactionPanelLayout.createSequentialGroup()
+                        .addComponent(t_stype, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(4, 4, 4)
                         .addComponent(TransactionInput, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(t_search)
@@ -1213,7 +1284,7 @@ public class JDBCProject extends javax.swing.JFrame {
                         .addComponent(jLabel18)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(DDText, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(411, Short.MAX_VALUE))
         );
         TransactionPanelLayout.setVerticalGroup(
             TransactionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1221,7 +1292,8 @@ public class JDBCProject extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addGroup(TransactionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TransactionInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(t_search))
+                    .addComponent(t_search)
+                    .addComponent(t_stype, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
@@ -1246,7 +1318,7 @@ public class JDBCProject extends javax.swing.JFrame {
                         .addGroup(TransactionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel19)
                             .addComponent(SMText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(206, Short.MAX_VALUE))
+                .addContainerGap(207, Short.MAX_VALUE))
         );
 
         jPanel1.add(TransactionPanel, "TransactionPanel");
@@ -1264,7 +1336,7 @@ public class JDBCProject extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(CustomerTable);
 
-        CustomerInput.setText("Masukkan Customer Key");
+        CustomerInput.setText("");
         CustomerInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CustomerInputActionPerformed(evt);
@@ -1304,7 +1376,7 @@ public class JDBCProject extends javax.swing.JFrame {
             }
         });
 
-        c_stype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Customer Key", "Customer Name", "Region", "Country", "Market", "Business Type" }));
+        c_stype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Customer Key", "Customer Name", "States", "Region", "Country", "Market", "Business Type" }));
 
         javax.swing.GroupLayout CustomerPanelLayout = new javax.swing.GroupLayout(CustomerPanel);
         CustomerPanel.setLayout(CustomerPanelLayout);
@@ -1739,8 +1811,11 @@ public class JDBCProject extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JButton o_search;
+    private javax.swing.JComboBox<String> o_stype;
     private javax.swing.JButton p_search;
+    private javax.swing.JComboBox<String> p_stype;
     private javax.swing.JButton t_search;
+    private javax.swing.JComboBox<String> t_stype;
     private javax.swing.JButton tombolHapus;
     private javax.swing.JButton tombolTambah;
     private javax.swing.JButton tombolUbah;
@@ -1748,5 +1823,5 @@ public class JDBCProject extends javax.swing.JFrame {
     private CardLayout cardLayout;
 
     //Variabel untuk menentukan halaman yang sedang dibuka
-    private String halamanDibuka = "CustomerPanel"; //"CustomerPanel" sebagai halaman pertama yang dibuka 
+    private String halamanDibuka = "ProductPanel"; //"ProductPanel" sebagai halaman pertama yang dibuka 
 }
