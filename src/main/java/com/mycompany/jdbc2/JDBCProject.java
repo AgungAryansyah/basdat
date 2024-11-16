@@ -227,9 +227,10 @@ public class JDBCProject extends javax.swing.JFrame {
 
         c_search.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                String cs_ckey = CustomerInput.getText();
+                String cs_input = CustomerInput.getText();
+                String cs_inputType = (String) c_stype.getSelectedItem();
                 try{
-                    cariCustomer(cs_ckey);
+                    cariCustomer(cs_input, cs_inputType);
                 } catch (Exception e){
                     System.out.println("gagal");
                 }
@@ -272,6 +273,8 @@ public class JDBCProject extends javax.swing.JFrame {
                 
             }
         });
+
+        
     }
 
     private void tambahCustomer() throws SQLException, ClassNotFoundException{
@@ -595,12 +598,26 @@ public class JDBCProject extends javax.swing.JFrame {
         }
     }
 
-    private void cariCustomer(String cs_ckey) throws SQLException, ClassNotFoundException{
+    private void cariCustomer(String cs_input, String cs_inputType) throws SQLException, ClassNotFoundException{
         try (Connection conn = DriverManager.getConnection(connectURL, sqlUser, sqlPassword)) {
             //Tampilkan Tabel User 
             DefaultTableModel model = (DefaultTableModel) CustomerTable.getModel();
             model.setRowCount(0);
-            String query = "SELECT * FROM Customer where CKey = '" + cs_ckey + "'";
+            String sqlInput = cs_inputType;
+            switch (cs_inputType) {
+                case "Customer Key":
+                    sqlInput = "CKey";
+                    break;
+                case "Customer Name":
+                    sqlInput = "CName";
+                    break;
+                case "Business Type":
+                    sqlInput = "BusinessType";
+                    break;
+                default:
+                    break;
+            }
+            String query = "SELECT * FROM Customer where " + sqlInput + " = '" + cs_input + "'";
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
@@ -815,6 +832,7 @@ public class JDBCProject extends javax.swing.JFrame {
         BTLabel = new javax.swing.JLabel();
         BTText = new javax.swing.JTextField();
         c_search = new javax.swing.JButton();
+        c_stype = new javax.swing.JComboBox<>();
         CustomerButton = new javax.swing.JButton();
         ProductButton = new javax.swing.JButton();
         OrderButton = new javax.swing.JButton();
@@ -1286,6 +1304,8 @@ public class JDBCProject extends javax.swing.JFrame {
             }
         });
 
+        c_stype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Customer Key", "Customer Name", "Region", "Country", "Market", "Business Type" }));
+
         javax.swing.GroupLayout CustomerPanelLayout = new javax.swing.GroupLayout(CustomerPanel);
         CustomerPanel.setLayout(CustomerPanelLayout);
         CustomerPanelLayout.setHorizontalGroup(
@@ -1295,8 +1315,10 @@ public class JDBCProject extends javax.swing.JFrame {
                 .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(CustomerPanelLayout.createSequentialGroup()
+                        .addComponent(c_stype, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(CustomerInput, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(c_search)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -1341,7 +1363,8 @@ public class JDBCProject extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addGroup(CustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CustomerInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(c_search))
+                    .addComponent(c_search)
+                    .addComponent(c_stype, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -1690,6 +1713,7 @@ public class JDBCProject extends javax.swing.JFrame {
     private javax.swing.JPanel TransactionPanel;
     private javax.swing.JTable TransactionTable;
     private javax.swing.JButton c_search;
+    private javax.swing.JComboBox<String> c_stype;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
