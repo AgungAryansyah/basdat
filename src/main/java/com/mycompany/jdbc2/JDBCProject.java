@@ -11,7 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.*;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -967,7 +967,7 @@ public class JDBCProject extends javax.swing.JFrame {
         CorePanel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jLabel1.setFont(new java.awt.Font("DejaVu Math TeX Gyre", 0, 36)); // NOI18N
-        jLabel1.setText("FURNITURE");
+        jLabel1.setText("Sistem Kelola Penjualan Manufaktur");
 
         jPanel1.setLayout(new java.awt.CardLayout());
         cardLayout = (CardLayout) jPanel1.getLayout();
@@ -984,7 +984,7 @@ public class JDBCProject extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(ProductTable);
 
-        ProductInput.setText("");
+        ProductInput.setText("Masukkan Product Key");
         ProductInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ProductInputActionPerformed(evt);
@@ -1017,7 +1017,7 @@ public class JDBCProject extends javax.swing.JFrame {
 
         p_search.setText("Cari");
 
-        p_stype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Product Key", "Category", "SubCategory", "Product Name", "Information", "Price" }));
+        p_stype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout ProductPanelLayout = new javax.swing.GroupLayout(ProductPanel);
         ProductPanel.setLayout(ProductPanelLayout);
@@ -1119,7 +1119,7 @@ public class JDBCProject extends javax.swing.JFrame {
         ));
         jScrollPane3.setViewportView(OrderTable);
 
-        OrderInput.setText("");
+        OrderInput.setText("Masukkan Sales Order Number");
         OrderInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 OrderInputActionPerformed(evt);
@@ -1163,7 +1163,7 @@ public class JDBCProject extends javax.swing.JFrame {
             }
         });
 
-        o_stype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sales Order Number", "Product Key", "Order Quantity", "Discount", "Shipping Cost", "Order Priority" }));
+        o_stype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout OrderPanelLayout = new javax.swing.GroupLayout(OrderPanel);
         OrderPanel.setLayout(OrderPanelLayout);
@@ -1265,7 +1265,7 @@ public class JDBCProject extends javax.swing.JFrame {
         ));
         jScrollPane4.setViewportView(TransactionTable);
 
-        TransactionInput.setText("");
+        TransactionInput.setText("Masukkan Sales Order Number");
         TransactionInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TransactionInputActionPerformed(evt);
@@ -1302,7 +1302,7 @@ public class JDBCProject extends javax.swing.JFrame {
 
         t_search.setText("Cari");
 
-        t_stype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sales Order Number", "Customer Key", "Order Date", "Delivery Date", "Ship Mode" }));
+        t_stype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout TransactionPanelLayout = new javax.swing.GroupLayout(TransactionPanel);
         TransactionPanel.setLayout(TransactionPanelLayout);
@@ -1397,7 +1397,7 @@ public class JDBCProject extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(CustomerTable);
 
-        CustomerInput.setText("");
+        CustomerInput.setText("Masukkan Customer Key");
         CustomerInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CustomerInputActionPerformed(evt);
@@ -1437,7 +1437,7 @@ public class JDBCProject extends javax.swing.JFrame {
             }
         });
 
-        c_stype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Customer Key", "Customer Name", "States", "Region", "Country", "Market", "Business Type" }));
+        c_stype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout CustomerPanelLayout = new javax.swing.GroupLayout(CustomerPanel);
         CustomerPanel.setLayout(CustomerPanelLayout);
@@ -1576,16 +1576,16 @@ public class JDBCProject extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(CorePanelLayout.createSequentialGroup()
-                .addGap(430, 430, 430)
+                .addGap(231, 231, 231)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         CorePanelLayout.setVerticalGroup(
             CorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CorePanelLayout.createSequentialGroup()
-                .addGap(51, 51, 51)
+                .addGap(45, 45, 45)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(CorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CustomerButton)
                     .addComponent(ProductButton)
