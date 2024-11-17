@@ -373,6 +373,9 @@ public class JDBCProject extends javax.swing.JFrame {
             statement.setString(6, c_bt);
             int rowsInserted = statement.executeUpdate();
             System.out.println(rowsInserted);
+            if (rowsInserted == 0){
+                JOptionPane.showMessageDialog(null, "Tidak bisa mengubah data, Terdapat konfilk pada Foreign Key Customer key '" + c_customerKey + "' pada tabel Transaction", "Error", JOptionPane.ERROR_MESSAGE);    
+            } 
         } catch (Exception e){
             System.out.println("gagal");
             e.printStackTrace();
