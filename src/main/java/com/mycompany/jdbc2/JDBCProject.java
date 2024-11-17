@@ -14,6 +14,8 @@ import java.sql.Statement;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class JDBCProject extends javax.swing.JFrame {
@@ -281,26 +283,34 @@ public class JDBCProject extends javax.swing.JFrame {
     }
 
     private void tambahCustomer() throws SQLException, ClassNotFoundException{
-        String t_customerKey = CustomerText.getText();
-        String t_customerName = CNameText.getText();
-        String t_state = StateText.getText();
-        String t_region = RegionText.getText();
-        String t_country = CountryText.getText();
-        String t_market = MarketText.getText();
-        String t_bt = BTText.getText();
+        String c_customerKey = CustomerText.getText();
+        String c_customerName = CNameText.getText();
+        String c_state = StateText.getText();
+        String c_region = RegionText.getText();
+        String c_country = CountryText.getText();
+        String c_market = MarketText.getText();
+        String c_bt = BTText.getText();
         
         try (Connection conn = DriverManager.getConnection(connectURL, sqlUser, sqlPassword)){
             PreparedStatement statement = conn.prepareStatement(
                 "insert into Customer values(?, ?, ?, ?, ?, ?, ?)");
-            statement.setString(1, t_customerKey);
-            statement.setString(2, t_customerName);
-            statement.setString(3, t_state);
-            statement.setString(4, t_region);
-            statement.setString(5, t_country);
-            statement.setString(6, t_market);
-            statement.setString(7, t_bt);
+            statement.setString(1, c_customerKey);
+            statement.setString(2, c_customerName);
+            statement.setString(3, c_state);
+            statement.setString(4, c_region);
+            statement.setString(5, c_country);
+            statement.setString(6, c_market);
+            statement.setString(7, c_bt);
             int rowsInserted = statement.executeUpdate();
             System.out.println(rowsInserted);
+        } catch (SQLException e){
+            int errorCode = e.getErrorCode();
+            System.out.println(errorCode);
+
+            if (errorCode == 2627){
+                JOptionPane.showMessageDialog(null, "Tidak bisa memasukkan data, Custumer key '" + c_customerKey + "' sudah ada pada database", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
         } catch (Exception e){
             System.out.println("gagal");
             e.printStackTrace();
@@ -308,26 +318,34 @@ public class JDBCProject extends javax.swing.JFrame {
     }
 
     private void hapusCustomer() throws SQLException, ClassNotFoundException{
-        String t_customerKey = CustomerText.getText();
-        String t_customerName = CNameText.getText();
-        String t_state = StateText.getText();
-        String t_region = RegionText.getText();
-        String t_country = CountryText.getText();
-        String t_market = MarketText.getText();
-        String t_bt = BTText.getText();
+        String c_customerKey = CustomerText.getText();
+        String c_customerName = CNameText.getText();
+        String c_state = StateText.getText();
+        String c_region = RegionText.getText();
+        String c_country = CountryText.getText();
+        String c_market = MarketText.getText();
+        String c_bt = BTText.getText();
         
         try (Connection conn = DriverManager.getConnection(connectURL, sqlUser, sqlPassword)){
             PreparedStatement statement = conn.prepareStatement(
                 "delete from Customer where Ckey = ? and CName = ? and States = ? and Region = ? and Country = ? and Market = ? and BusinessType = ?");
-            statement.setString(1, t_customerKey);
-            statement.setString(2, t_customerName);
-            statement.setString(3, t_state);
-            statement.setString(4, t_region);
-            statement.setString(5, t_country);
-            statement.setString(6, t_market);
-            statement.setString(7, t_bt);
+            statement.setString(1, c_customerKey);
+            statement.setString(2, c_customerName);
+            statement.setString(3, c_state);
+            statement.setString(4, c_region);
+            statement.setString(5, c_country);
+            statement.setString(6, c_market);
+            statement.setString(7, c_bt);
             int rowsInserted = statement.executeUpdate();
             System.out.println(rowsInserted);
+        } catch (SQLException e){
+            int errorCode = e.getErrorCode();
+            System.out.println(errorCode);
+
+            if (errorCode == 547){
+                JOptionPane.showMessageDialog(null, "Tidak bisa menghapus data, Terdapat konfilk pada Foreign Key Customer key '" + c_customerKey + "' pada tabel Transaction", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
         } catch (Exception e){
             System.out.println("gagal");
             e.printStackTrace();
@@ -335,24 +353,24 @@ public class JDBCProject extends javax.swing.JFrame {
     }
 
     private void ubahCustomer() throws SQLException, ClassNotFoundException{
-        String t_customerKey = CustomerText.getText();
-        String t_customerName = CNameText.getText();
-        String t_state = StateText.getText();
-        String t_region = RegionText.getText();
-        String t_country = CountryText.getText();
-        String t_market = MarketText.getText();
-        String t_bt = BTText.getText();
+        String c_customerKey = CustomerText.getText();
+        String c_customerName = CNameText.getText();
+        String c_state = StateText.getText();
+        String c_region = RegionText.getText();
+        String c_country = CountryText.getText();
+        String c_market = MarketText.getText();
+        String c_bt = BTText.getText();
         
         try (Connection conn = DriverManager.getConnection(connectURL, sqlUser, sqlPassword)){
             PreparedStatement statement = conn.prepareStatement(
                 "update Customer set CName = ?, States = ?, Region = ?, Country = ?, Market = ?, BusinessType = ? where Ckey = ?");
-            statement.setString(7, t_customerKey);
-            statement.setString(1, t_customerName);
-            statement.setString(2, t_state);
-            statement.setString(3, t_region);
-            statement.setString(4, t_country);
-            statement.setString(5, t_market);
-            statement.setString(6, t_bt);
+            statement.setString(7, c_customerKey);
+            statement.setString(1, c_customerName);
+            statement.setString(2, c_state);
+            statement.setString(3, c_region);
+            statement.setString(4, c_country);
+            statement.setString(5, c_market);
+            statement.setString(6, c_bt);
             int rowsInserted = statement.executeUpdate();
             System.out.println(rowsInserted);
         } catch (Exception e){
@@ -380,7 +398,15 @@ public class JDBCProject extends javax.swing.JFrame {
             statement.setString(6, p_price);
             int rowsInserted = statement.executeUpdate();
             System.out.println(rowsInserted);
-        } catch (Exception e){
+        } catch (SQLException e){
+            int errorCode = e.getErrorCode();
+            System.out.println(errorCode);
+
+            if (errorCode == 2627){
+                JOptionPane.showMessageDialog(null, "Tidak bisa memasukkan data, Product key '" + p_pkey + "' sudah ada pada database", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }catch (Exception e){
             System.out.println("gagal");
             e.printStackTrace();
         }
@@ -405,6 +431,14 @@ public class JDBCProject extends javax.swing.JFrame {
             statement.setString(6, p_price);
             int rowsInserted = statement.executeUpdate();
             System.out.println(rowsInserted);
+        } catch (SQLException e){
+            int errorCode = e.getErrorCode();
+            System.out.println(errorCode);
+
+            if (errorCode == 547){
+                JOptionPane.showMessageDialog(null, "Tidak bisa menghapus data, Terdapat konfilk pada Foreign Key Product key '" + p_pkey + "' pada tabel Order", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
         } catch (Exception e){
             System.out.println("gagal");
             e.printStackTrace();
@@ -455,7 +489,15 @@ public class JDBCProject extends javax.swing.JFrame {
             statement.setString(6, o_op);
             int rowsInserted = statement.executeUpdate();
             System.out.println(rowsInserted);
-        } catch (Exception e){
+        } catch (SQLException e){
+            int errorCode = e.getErrorCode();
+            System.out.println(errorCode);
+
+            if (errorCode == 2627){
+                JOptionPane.showMessageDialog(null, "Tidak bisa memasukkan data, Sales Order Number '" + o_son + "' sudah ada pada database", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }catch (Exception e){
             System.out.println("gagal");
             e.printStackTrace();
         }
@@ -528,7 +570,15 @@ public class JDBCProject extends javax.swing.JFrame {
             statement.setString(5, t_sm);
             int rowsInserted = statement.executeUpdate();
             System.out.println(rowsInserted);
-        } catch (Exception e){
+        } catch (SQLException e){
+            int errorCode = e.getErrorCode();
+            System.out.println(errorCode);
+
+            if (errorCode == 2627){
+                JOptionPane.showMessageDialog(null, "Tidak bisa memasukkan data, Sales Order Number '" + t_son + "' sudah ada pada database", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }catch (Exception e){
             System.out.println("gagal");
             e.printStackTrace();
         }
@@ -551,6 +601,14 @@ public class JDBCProject extends javax.swing.JFrame {
             statement.setString(5, t_sm);
             int rowsInserted = statement.executeUpdate();
             System.out.println(rowsInserted);
+        } catch (SQLException e){
+            int errorCode = e.getErrorCode();
+            System.out.println(errorCode);
+
+            if (errorCode == 547){
+                JOptionPane.showMessageDialog(null, "Tidak bisa menghapus data, Terdapat konfilk pada Foreign Key Sales Order Number '" + t_son + "' pada tabel Order", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
         } catch (Exception e){
             System.out.println("gagal");
             e.printStackTrace();
@@ -620,7 +678,7 @@ public class JDBCProject extends javax.swing.JFrame {
                 default:
                     break;
             }
-            String query = "SELECT * FROM Customer where " + sqlInput + " = '" + cs_input + "'";
+            String query = "SELECT * FROM Customer where " + sqlInput + " like '%" + cs_input + "%'";
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
@@ -672,7 +730,7 @@ public class JDBCProject extends javax.swing.JFrame {
                 default:
                     break;
             }
-            String query = "SELECT * FROM Product where " + sqlInput + " = '" + ps_input + "'";
+            String query = "SELECT * FROM Product where " + sqlInput + " like '%" + ps_input + "%'";
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
@@ -732,7 +790,7 @@ public class JDBCProject extends javax.swing.JFrame {
                 default:
                     break;
             }
-            String query = "SELECT * FROM Orders where " + sqlInput + " = '" + os_input + "'";
+            String query = "SELECT * FROM Orders where " + sqlInput + " like '%" + os_input + "%'";
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
@@ -791,7 +849,7 @@ public class JDBCProject extends javax.swing.JFrame {
                 default:
                     break;
             }
-            String query = "SELECT * FROM Transactions where " + sqlInput + " = '" + ts_input + "'";
+            String query = "SELECT * FROM Transactions where " + sqlInput + " like '%" + ts_input + "%'";
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
