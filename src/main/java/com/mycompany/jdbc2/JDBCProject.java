@@ -846,7 +846,7 @@ public class JDBCProject extends javax.swing.JFrame {
                 case "Delivery Date":
                     sqlInput = "DeliveryDate";
                     break;
-                case "Ship Mode":
+                case "Shipping Mode":
                     sqlInput = "ShipMode";
                     break;
                 default:
@@ -984,7 +984,7 @@ public class JDBCProject extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(ProductTable);
 
-        ProductInput.setText("Masukkan Product Key");
+        ProductInput.setText("");
         ProductInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ProductInputActionPerformed(evt);
@@ -1017,7 +1017,7 @@ public class JDBCProject extends javax.swing.JFrame {
 
         p_search.setText("Cari");
 
-        p_stype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        p_stype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Product Key", "Category", "SubCategory", "Product Name", "Information", "Price" }));
 
         javax.swing.GroupLayout ProductPanelLayout = new javax.swing.GroupLayout(ProductPanel);
         ProductPanel.setLayout(ProductPanelLayout);
@@ -1119,7 +1119,7 @@ public class JDBCProject extends javax.swing.JFrame {
         ));
         jScrollPane3.setViewportView(OrderTable);
 
-        OrderInput.setText("Masukkan Sales Order Number");
+        OrderInput.setText("");
         OrderInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 OrderInputActionPerformed(evt);
@@ -1163,7 +1163,7 @@ public class JDBCProject extends javax.swing.JFrame {
             }
         });
 
-        o_stype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        o_stype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sales Order Number", "Product Key", "Order Quantitiy", "Discount", "Shipping Cost", "Order Priority" }));
 
         javax.swing.GroupLayout OrderPanelLayout = new javax.swing.GroupLayout(OrderPanel);
         OrderPanel.setLayout(OrderPanelLayout);
@@ -1265,7 +1265,7 @@ public class JDBCProject extends javax.swing.JFrame {
         ));
         jScrollPane4.setViewportView(TransactionTable);
 
-        TransactionInput.setText("Masukkan Sales Order Number");
+        TransactionInput.setText("");
         TransactionInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TransactionInputActionPerformed(evt);
@@ -1302,7 +1302,7 @@ public class JDBCProject extends javax.swing.JFrame {
 
         t_search.setText("Cari");
 
-        t_stype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        t_stype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sales Order Number", "Customer Key", "Order Date", "Delivery Date", "Shipping Mode" }));
 
         javax.swing.GroupLayout TransactionPanelLayout = new javax.swing.GroupLayout(TransactionPanel);
         TransactionPanel.setLayout(TransactionPanelLayout);
@@ -1397,7 +1397,7 @@ public class JDBCProject extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(CustomerTable);
 
-        CustomerInput.setText("Masukkan Customer Key");
+        CustomerInput.setText("");
         CustomerInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CustomerInputActionPerformed(evt);
@@ -1437,7 +1437,7 @@ public class JDBCProject extends javax.swing.JFrame {
             }
         });
 
-        c_stype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        c_stype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Customer Key", "Customer Name", "States", "Region", "Country", "Market", "Business Type" }));
 
         javax.swing.GroupLayout CustomerPanelLayout = new javax.swing.GroupLayout(CustomerPanel);
         CustomerPanel.setLayout(CustomerPanelLayout);
