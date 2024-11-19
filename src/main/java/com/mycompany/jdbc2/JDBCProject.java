@@ -24,7 +24,7 @@ public class JDBCProject extends javax.swing.JFrame {
     String sqlInstanceName = "sql1"; // SQL Server instance name
     String sqlDatabase = "JDBC";  // Database name
     String sqlUser = "sa";
-    String sqlPassword = "AgungOnDatabase123."; // Password for sa account
+    String sqlPassword = "....."; // Password for sa account
     String connectURL = "jdbc:sqlserver://" + hostname + ":1433" + ";instance=" + sqlInstanceName + ";databaseName=" + sqlDatabase + ";encrypt=true;trustServerCertificate=true";
     /**
      * Creates new form JDBCProject
